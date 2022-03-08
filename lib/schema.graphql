@@ -1,0 +1,89 @@
+type Course {
+    _id: ID!
+    title: String!
+    teacher: String @deprecated
+    teacherId: ID!
+    description: String!
+    topic: String
+    students: [Student]
+}
+
+enum Area {
+    Math
+    English
+    fisic
+}
+
+interface User {
+    _id: ID!
+    name: String!
+    age: Int
+    class: String
+}
+
+type Student implements User {
+    _id: ID!
+    name: String!
+    age: Int
+    class: String
+}
+
+type Teacher implements User {
+    _id: ID!
+    name: String!
+    age: Int
+    class: String
+    area: Area
+}
+
+type Query {
+    "returns all courses"
+    getCourses: [Course]
+    "returns a course"
+    getCourse(id: ID!): Course
+    "returns a student"
+    getUser(id: ID!): Student
+    "return all users"
+    getUsers: [User]
+}
+
+type Mutation {
+    "creates a course"
+    createCourse(input: courseInput): Course
+    "creates a user"
+    createUser(input: UserInput): User
+    "edits a student"
+    editUser(id: ID!, input: EditUserInput): User
+    "edits a course"
+    editCourse(id: ID!, input: editCourseInput): Course
+    "add a student to a course"
+    addStudent(courseID: ID!, studentID: ID!): Course
+    "add a teacher to a course"
+    addTeacher(courseID: ID!, teacherID: ID!): Course
+}
+
+input courseInput {
+    title: String!
+    teacherId: ID
+    description: String!
+    topic: String
+}
+
+input editCourseInput {
+    title: String
+    teacher: String
+    description: String
+    topic: String
+}
+
+input UserInput {
+    name: String!
+    age: Int
+    area: Area
+}
+
+input EditUserInput {
+    name: String
+    age: Int
+    area: Area
+}
